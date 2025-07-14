@@ -9,11 +9,11 @@ import { useLifeCalculations } from "@/hooks/use-life-calculations";
 export type ViewMode = 'lifetime' | 'year2025' | 'monthly';
 
 export default function LifeInWeeksPage() {
-  const [age, setAge] = useState<number>(0);
+  const [birthDate, setBirthDate] = useState<string>("");
   const [currentView, setCurrentView] = useState<ViewMode>('lifetime');
   const [selectedMonth, setSelectedMonth] = useState<number>(6); // July (0-indexed)
   
-  const calculations = useLifeCalculations(age);
+  const calculations = useLifeCalculations(birthDate);
 
   return (
     <div className="life-weeks-container">
@@ -28,7 +28,7 @@ export default function LifeInWeeksPage() {
 
         {/* Main Controls */}
         <section className="life-weeks-controls">
-          <AgeInput age={age} onAgeChange={setAge} />
+          <AgeInput birthDate={birthDate} onBirthDateChange={setBirthDate} />
           
           <ViewSelector 
             currentView={currentView} 

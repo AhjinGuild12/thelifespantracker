@@ -212,6 +212,13 @@
   box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 
+.age-display {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-4);
+  font-weight: var(--font-weight-medium);
+}
+
 .view-selector {
   display: flex;
   gap: var(--space-8);

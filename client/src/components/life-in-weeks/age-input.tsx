@@ -1,33 +1,44 @@
 interface AgeInputProps {
-  age: number;
-  onAgeChange: (age: number) => void;
+  birthDate: string;
+  onBirthDateChange: (birthDate: string) => void;
 }
 
-export default function AgeInput({ age, onAgeChange }: AgeInputProps) {
+export default function AgeInput({ birthDate, onBirthDateChange }: AgeInputProps) {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    const numAge = parseFloat(value);
+    onBirthDateChange(value);
+  };
+
+  // Calculate age for display
+  const calculateAge = () => {
+    if (!birthDate) return '';
+    const birth = new Date(birthDate);
+    const today = new Date('2025-07-14');
+    const ageInYears = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
     
-    if (value === '' || isNaN(numAge) || numAge < 0 || numAge > 120) {
-      onAgeChange(0);
-    } else {
-      onAgeChange(numAge);
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      return (ageInYears - 1).toString();
     }
+    return ageInYears.toString();
   };
 
   return (
     <div className="age-input-container">
-      <label htmlFor="age" className="age-input-label">Enter your age:</label>
+      <label htmlFor="birthDate" className="age-input-label">Enter your birth date:</label>
       <input
-        type="number"
-        id="age"
+        type="date"
+        id="birthDate"
         className="age-input-field"
-        placeholder="25"
-        min="0"
-        max="120"
-        value={age || ''}
+        value={birthDate}
         onChange={handleInputChange}
+        max="2025-07-14"
       />
+      {birthDate && (
+        <div className="age-display">
+          Age: {calculateAge()} years
+        </div>
+      )}
     </div>
   );
 }
