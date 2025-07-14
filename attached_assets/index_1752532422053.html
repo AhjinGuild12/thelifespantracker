@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life In Weeks - 4,000 Weeks Visualization</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="header__title">Life In Weeks</h1>
+            <p class="header__subtitle">Visualizing your 4,000 weeks to inspire action on what matters most</p>
+        </header>
+
+        <!-- Main Controls -->
+        <section class="controls">
+            <div class="age-input">
+                <label for="age" class="form-label">Enter your age:</label>
+                <input type="number" id="age" class="form-control age-input__field" placeholder="25" min="0" max="120">
+            </div>
+            
+            <div class="view-selector">
+                <button class="btn btn--primary view-btn active" data-view="lifetime">Lifetime</button>
+                <button class="btn btn--outline view-btn" data-view="year2025">2025 Progress</button>
+                <button class="btn btn--outline view-btn" data-view="monthly">Monthly</button>
+            </div>
+
+            <div class="month-selector hidden">
+                <label for="month" class="form-label">Select Month:</label>
+                <select id="month" class="form-control">
+                    <option value="0">January 2025</option>
+                    <option value="1">February 2025</option>
+                    <option value="2">March 2025</option>
+                    <option value="3">April 2025</option>
+                    <option value="4">May 2025</option>
+                    <option value="5">June 2025</option>
+                    <option value="6" selected>July 2025</option>
+                    <option value="7">August 2025</option>
+                    <option value="8">September 2025</option>
+                    <option value="9">October 2025</option>
+                    <option value="10">November 2025</option>
+                    <option value="11">December 2025</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Statistics Cards -->
+        <section class="stats">
+            <div class="stats__grid">
+                <div class="card stats__card">
+                    <div class="card__body">
+                        <h3 class="stats__title">Weeks Lived</h3>
+                        <div class="stats__number" id="weeks-lived">0</div>
+                        <div class="stats__bar">
+                            <div class="stats__progress" id="progress-lived"></div>
+                        </div>
+                        <div class="stats__label">Accomplished ✓</div>
+                    </div>
+                </div>
+                
+                <div class="card stats__card">
+                    <div class="card__body">
+                        <h3 class="stats__title">Weeks Remaining</h3>
+                        <div class="stats__number" id="weeks-remaining">4160</div>
+                        <div class="stats__bar">
+                            <div class="stats__progress stats__progress--remaining" id="progress-remaining"></div>
+                        </div>
+                        <div class="stats__label">Opportunity ahead</div>
+                    </div>
+                </div>
+                
+                <div class="card stats__card">
+                    <div class="card__body">
+                        <h3 class="stats__title">Life Progress</h3>
+                        <div class="stats__number" id="life-percentage">0%</div>
+                        <div class="stats__bar">
+                            <div class="stats__progress" id="progress-total"></div>
+                        </div>
+                        <div class="stats__label">Of your journey</div>
+                    </div>
+                </div>
+                
+                <div class="card stats__card">
+                    <div class="card__body">
+                        <h3 class="stats__title">2025 Progress</h3>
+                        <div class="stats__number" id="year-progress">0%</div>
+                        <div class="stats__bar">
+                            <div class="stats__progress" id="progress-2025"></div>
+                        </div>
+                        <div class="stats__label">This year</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualization Grid -->
+        <section class="visualization">
+            <div class="grid-container">
+                <div class="grid-header">
+                    <h2 class="grid-title" id="grid-title">Your Life in Weeks</h2>
+                    <div class="grid-legend">
+                        <div class="legend-item">
+                            <div class="legend-box legend-box--lived">✓</div>
+                            <span>Weeks lived</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box legend-box--current">●</div>
+                            <span>Current week</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-box legend-box--remaining"></div>
+                            <span>Weeks remaining</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="weeks-grid" id="weeks-grid">
+                    <!-- Grid will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Inspiration Section -->
+        <section class="inspiration">
+            <div class="quote-container">
+                <blockquote class="quote" id="quote">
+                    "Those are your weeks and they're all you've got."
+                </blockquote>
+                <cite class="quote-author">— Oliver Burkeman</cite>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer__text">
+                Inspired by Oliver Burkeman's book 
+                <a href="https://www.amazon.com/Four-Thousand-Weeks-Management-Mortals/dp/0374159122" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="footer__link">
+                    "Four Thousand Weeks: Time Management for Mortals"
+                </a>
+            </p>
+            <p class="footer__subtext">
+                A powerful reminder that time is finite and precious. 
+                Use this visualization to inspire action on what matters most.
+            </p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
