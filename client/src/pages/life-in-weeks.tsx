@@ -56,7 +56,7 @@ export default function LifeInWeeksPage() {
           <p className="footer-text">
             Inspired by Oliver Burkeman's book{" "}
             <a 
-              href="https://www.amazon.com/Four-Thousand-Weeks-Management-Mortals/dp/0374159122" 
+              href="https://amzn.to/40iGaoR" 
               target="_blank" 
               rel="noopener noreferrer"
               className="footer-link"
