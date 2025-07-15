@@ -26,7 +26,7 @@ export default function WeeksGrid({ currentView, selectedMonth, calculations }: 
   const [fadeIn, setFadeIn] = useState(false);
   const isMobile = useIsMobile();
   
-  const currentDate = new Date('2025-07-14');
+  const currentDate = new Date(); // Use actual current date
   const totalLifeWeeks = 4160;
   const weeksPerYear = 52;
 
@@ -37,13 +37,14 @@ export default function WeeksGrid({ currentView, selectedMonth, calculations }: 
   }, [currentView, selectedMonth]);
 
   const getGridTitle = () => {
+    const currentYear = currentDate.getFullYear();
     switch (currentView) {
       case 'lifetime':
         return 'Your Life in Weeks (80 years)';
       case 'year2025':
-        return '2025 Progress (52 weeks)';
+        return `${currentYear} Progress (52 weeks)`;
       case 'monthly':
-        return `${monthNames[selectedMonth]} 2025`;
+        return `${monthNames[selectedMonth]} ${currentYear}`;
       default:
         return 'Your Life in Weeks';
     }
@@ -64,7 +65,8 @@ export default function WeeksGrid({ currentView, selectedMonth, calculations }: 
   };
 
   const calculateCurrentWeek = () => {
-    const startOfYear = new Date(2025, 0, 1);
+    const currentYear = currentDate.getFullYear();
+    const startOfYear = new Date(currentYear, 0, 1);
     const timeDiff = currentDate.getTime() - startOfYear.getTime();
     const dayOfYear = Math.floor(timeDiff / (24 * 60 * 60 * 1000)) + 1;
     return Math.min(Math.ceil(dayOfYear / 7), 52);
@@ -136,9 +138,10 @@ export default function WeeksGrid({ currentView, selectedMonth, calculations }: 
   };
 
   const renderMonthlyView = () => {
-    const daysInMonth = new Date(2025, selectedMonth + 1, 0).getDate();
-    const currentDay = selectedMonth === currentDate.getMonth() ? currentDate.getDate() : 0;
-    const firstDay = new Date(2025, selectedMonth, 1);
+    const currentYear = currentDate.getFullYear();
+    const daysInMonth = new Date(currentYear, selectedMonth + 1, 0).getDate();
+    const currentDay = selectedMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear() ? currentDate.getDate() : 0;
+    const firstDay = new Date(currentYear, selectedMonth, 1);
     const startingDayOfWeek = firstDay.getDay();
     
     const boxes = [];
@@ -154,7 +157,8 @@ export default function WeeksGrid({ currentView, selectedMonth, calculations }: 
     for (let day = 1; day <= daysInMonth; day++) {
       let className = 'week-box ';
       
-      if (selectedMonth === currentDate.getMonth()) {
+      const currentYear = currentDate.getFullYear();
+      if (selectedMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear()) {
         if (day < currentDay) {
           className += 'lived';
         } else if (day === currentDay) {
@@ -162,7 +166,7 @@ export default function WeeksGrid({ currentView, selectedMonth, calculations }: 
         } else {
           className += 'empty';
         }
-      } else if (selectedMonth < currentDate.getMonth()) {
+      } else if (selectedMonth < currentDate.getMonth() || currentYear < currentDate.getFullYear()) {
         className += 'lived';
       } else {
         className += 'empty';
@@ -172,7 +176,7 @@ export default function WeeksGrid({ currentView, selectedMonth, calculations }: 
         <div
           key={day}
           className={className}
-          title={`${monthNames[selectedMonth]} ${day}, 2025`}
+          title={`${monthNames[selectedMonth]} ${day}, ${currentDate.getFullYear()}`}
         >
           {day}
         </div>

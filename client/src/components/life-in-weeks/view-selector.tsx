@@ -18,6 +18,8 @@ export default function ViewSelector({
   selectedMonth, 
   onMonthChange 
 }: ViewSelectorProps) {
+  const currentYear = new Date().getFullYear();
+  
   return (
     <>
       <div className="view-selector">
@@ -31,7 +33,7 @@ export default function ViewSelector({
           className={`view-btn ${currentView === 'year2025' ? 'active' : ''}`}
           onClick={() => onViewChange('year2025')}
         >
-          2025 Progress
+          {currentYear} Progress
         </button>
         <button
           className={`view-btn ${currentView === 'monthly' ? 'active' : ''}`}
@@ -51,7 +53,7 @@ export default function ViewSelector({
         >
           {monthNames.map((month, index) => (
             <option key={index} value={index}>
-              {month} 2025
+              {month} {currentYear}
             </option>
           ))}
         </select>

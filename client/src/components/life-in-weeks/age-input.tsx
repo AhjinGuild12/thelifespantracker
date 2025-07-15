@@ -13,7 +13,7 @@ export default function AgeInput({ birthDate, onBirthDateChange }: AgeInputProps
   const calculateAge = () => {
     if (!birthDate) return '';
     const birth = new Date(birthDate);
-    const today = new Date('2025-07-14');
+    const today = new Date(); // Use actual current date
     const ageInYears = today.getFullYear() - birth.getFullYear();
     const monthDiff = today.getMonth() - birth.getMonth();
     
@@ -32,7 +32,7 @@ export default function AgeInput({ birthDate, onBirthDateChange }: AgeInputProps
         className="age-input-field"
         value={birthDate}
         onChange={handleInputChange}
-        max="2025-07-14"
+        max={new Date().toISOString().split('T')[0]}
       />
       {birthDate && (
         <div className="age-display">

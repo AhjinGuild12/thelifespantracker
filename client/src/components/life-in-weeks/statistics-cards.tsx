@@ -66,7 +66,7 @@ export default function StatisticsCards({ calculations }: StatisticsCardsProps) 
         </div>
         
         <div className="stats-card">
-          <h3 className="stats-title">2025 Progress</h3>
+          <h3 className="stats-title">{new Date().getFullYear()} Progress</h3>
           <div className="stats-number">{calculations.yearProgress.percentage}%</div>
           <div className="stats-bar">
             <div ref={progress2025Ref} className="stats-progress"></div>
