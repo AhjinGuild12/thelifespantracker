@@ -5,23 +5,26 @@ export function useLifeCalculations(birthDate: string) {
     const totalLifeWeeks = 4160; // 80 years × 52 weeks
     const currentDate = new Date(); // Use actual current date
     
+    // Calculate year progress (independent of birth date)
+    const currentYear = currentDate.getFullYear();
+    const startOfYear = new Date(currentYear, 0, 1);
+    const endOfYear = new Date(currentYear, 11, 31);
+    const totalDays = Math.floor((endOfYear.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+    const daysPassed = Math.floor((currentDate.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
+    
+    const yearProgress = {
+      totalDays,
+      daysPassed,
+      percentage: Math.min(Math.round((daysPassed / totalDays) * 100), 100)
+    };
+    
     if (!birthDate) {
-      // Return empty state when no birth date is provided
-      const currentYear = currentDate.getFullYear();
-      const startOfYear = new Date(currentYear, 0, 1);
-      const endOfYear = new Date(currentYear, 11, 31);
-      const totalDays = Math.floor((endOfYear.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
-      const daysPassed = Math.floor((currentDate.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
-      
+      // Return empty state for personal data when no birth date is provided
       return {
         weeksLived: 0,
         weeksRemaining: totalLifeWeeks,
         lifePercentage: 0,
-        yearProgress: {
-          totalDays,
-          daysPassed,
-          percentage: Math.min(Math.round((daysPassed / totalDays) * 100), 100)
-        }
+        yearProgress
       };
     }
     
@@ -29,21 +32,11 @@ export function useLifeCalculations(birthDate: string) {
     
     // Validate birth date
     if (isNaN(birth.getTime()) || birth > currentDate) {
-      const currentYear = currentDate.getFullYear();
-      const startOfYear = new Date(currentYear, 0, 1);
-      const endOfYear = new Date(currentYear, 11, 31);
-      const totalDays = Math.floor((endOfYear.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
-      const daysPassed = Math.floor((currentDate.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
-      
       return {
         weeksLived: 0,
         weeksRemaining: totalLifeWeeks,
         lifePercentage: 0,
-        yearProgress: {
-          totalDays,
-          daysPassed,
-          percentage: Math.min(Math.round((daysPassed / totalDays) * 100), 100)
-        }
+        yearProgress
       };
     }
     
@@ -54,18 +47,6 @@ export function useLifeCalculations(birthDate: string) {
     
     const weeksRemaining = Math.max(0, totalLifeWeeks - weeksLived);
     const lifePercentage = weeksLived > 0 ? Math.min(Math.round((weeksLived / totalLifeWeeks) * 100), 100) : 0;
-    
-    // Calculate current year progress
-    const currentYear = currentDate.getFullYear();
-    const startOfYear = new Date(currentYear, 0, 1);
-    const endOfYear = new Date(currentYear, 11, 31);
-    const totalDays = Math.floor((endOfYear.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
-    const daysPassed = Math.floor((currentDate.getTime() - startOfYear.getTime()) / (24 * 60 * 60 * 1000)) + 1;
-    const yearProgress = {
-      totalDays,
-      daysPassed,
-      percentage: Math.min(Math.round((daysPassed / totalDays) * 100), 100)
-    };
     
     return {
       weeksLived,
