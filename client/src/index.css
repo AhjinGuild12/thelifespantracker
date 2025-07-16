@@ -302,6 +302,22 @@
   box-shadow: var(--shadow-md);
 }
 
+.stats-card.clickable {
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--duration-normal) var(--ease-standard);
+}
+
+.stats-card.clickable:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.stats-card.clickable:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-md);
+}
+
 .stats-title {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);

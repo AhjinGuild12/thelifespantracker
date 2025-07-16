@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface StatisticsCardsProps {
   calculations: {
@@ -13,11 +13,78 @@ interface StatisticsCardsProps {
   };
 }
 
+type LifeDisplayMode = 'percentage' | 'weeks' | 'months' | 'years' | 'days' | 'minutes';
+type YearDisplayMode = 'percentage' | 'weeks' | 'months' | 'days' | 'hours' | 'minutes';
+
 export default function StatisticsCards({ calculations }: StatisticsCardsProps) {
   const progressLivedRef = useRef<HTMLDivElement>(null);
   const progressRemainingRef = useRef<HTMLDivElement>(null);
   const progressTotalRef = useRef<HTMLDivElement>(null);
   const progress2025Ref = useRef<HTMLDivElement>(null);
+
+  const [lifeDisplayMode, setLifeDisplayMode] = useState<LifeDisplayMode>('percentage');
+  const [yearDisplayMode, setYearDisplayMode] = useState<YearDisplayMode>('percentage');
+
+  // Calculate different time units for life progress
+  const getLifeDisplayValue = () => {
+    const { weeksRemaining, lifePercentage } = calculations;
+    
+    switch (lifeDisplayMode) {
+      case 'percentage':
+        return { value: `${lifePercentage}%`, label: 'Of your journey' };
+      case 'weeks':
+        return { value: weeksRemaining.toLocaleString(), label: 'Weeks remaining' };
+      case 'months':
+        return { value: Math.round(weeksRemaining / 4.35).toLocaleString(), label: 'Months remaining' };
+      case 'years':
+        return { value: Math.round(weeksRemaining / 52).toLocaleString(), label: 'Years remaining' };
+      case 'days':
+        return { value: (weeksRemaining * 7).toLocaleString(), label: 'Days remaining' };
+      case 'minutes':
+        return { value: (weeksRemaining * 7 * 24 * 60).toLocaleString(), label: 'Minutes remaining' };
+      default:
+        return { value: `${lifePercentage}%`, label: 'Of your journey' };
+    }
+  };
+
+  // Calculate different time units for year progress
+  const getYearDisplayValue = () => {
+    const { percentage, daysPassed, totalDays } = calculations.yearProgress;
+    const daysRemaining = totalDays - daysPassed;
+    const currentYear = new Date().getFullYear();
+    
+    switch (yearDisplayMode) {
+      case 'percentage':
+        return { value: `${percentage}%`, label: 'This year' };
+      case 'weeks':
+        return { value: Math.ceil(daysRemaining / 7).toLocaleString(), label: 'Weeks left in year' };
+      case 'months':
+        return { value: Math.ceil(daysRemaining / 30.44).toLocaleString(), label: 'Months left in year' };
+      case 'days':
+        return { value: daysRemaining.toLocaleString(), label: 'Days left in year' };
+      case 'hours':
+        return { value: (daysRemaining * 24).toLocaleString(), label: 'Hours left in year' };
+      case 'minutes':
+        return { value: (daysRemaining * 24 * 60).toLocaleString(), label: 'Minutes left in year' };
+      default:
+        return { value: `${percentage}%`, label: 'This year' };
+    }
+  };
+
+  // Cycle through display modes
+  const cycleLifeDisplayMode = () => {
+    const modes: LifeDisplayMode[] = ['percentage', 'weeks', 'months', 'years', 'days', 'minutes'];
+    const currentIndex = modes.indexOf(lifeDisplayMode);
+    const nextIndex = (currentIndex + 1) % modes.length;
+    setLifeDisplayMode(modes[nextIndex]);
+  };
+
+  const cycleYearDisplayMode = () => {
+    const modes: YearDisplayMode[] = ['percentage', 'weeks', 'months', 'days', 'hours', 'minutes'];
+    const currentIndex = modes.indexOf(yearDisplayMode);
+    const nextIndex = (currentIndex + 1) % modes.length;
+    setYearDisplayMode(modes[nextIndex]);
+  };
 
   useEffect(() => {
     // Animate progress bars
@@ -56,22 +123,22 @@ export default function StatisticsCards({ calculations }: StatisticsCardsProps) 
           <div className="stats-label">Opportunity ahead</div>
         </div>
         
-        <div className="stats-card">
+        <div className="stats-card clickable" onClick={cycleLifeDisplayMode}>
           <h3 className="stats-title">Life Progress</h3>
-          <div className="stats-number">{calculations.lifePercentage}%</div>
+          <div className="stats-number">{getLifeDisplayValue().value}</div>
           <div className="stats-bar">
             <div ref={progressTotalRef} className="stats-progress"></div>
           </div>
-          <div className="stats-label">Of your journey</div>
+          <div className="stats-label">{getLifeDisplayValue().label}</div>
         </div>
         
-        <div className="stats-card">
+        <div className="stats-card clickable" onClick={cycleYearDisplayMode}>
           <h3 className="stats-title">{new Date().getFullYear()} Progress</h3>
-          <div className="stats-number">{calculations.yearProgress.percentage}%</div>
+          <div className="stats-number">{getYearDisplayValue().value}</div>
           <div className="stats-bar">
             <div ref={progress2025Ref} className="stats-progress"></div>
           </div>
-          <div className="stats-label">This year</div>
+          <div className="stats-label">{getYearDisplayValue().label}</div>
         </div>
       </div>
     </section>
