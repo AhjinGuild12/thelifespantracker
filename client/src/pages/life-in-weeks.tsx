@@ -39,7 +39,7 @@ export default function LifeInWeeksPage() {
         </section>
 
         {/* Statistics Cards */}
-        <StatisticsCards calculations={calculations} />
+        <StatisticsCards calculations={calculations} birthDate={birthDate} />
 
         {/* Visualization Grid */}
         <WeeksGrid 

@@ -1,9 +1,20 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 export function useLifeCalculations(birthDate: string) {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Update time every minute for real-time calculations
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
   return useMemo(() => {
     const totalLifeWeeks = 4160; // 80 years × 52 weeks
-    const currentDate = new Date(); // Use actual current date
+    const currentDate = currentTime; // Use real-time current date
     
     // Calculate year progress (independent of birth date)
     const currentYear = currentDate.getFullYear();
@@ -54,5 +65,5 @@ export function useLifeCalculations(birthDate: string) {
       lifePercentage,
       yearProgress
     };
-  }, [birthDate]);
+  }, [birthDate, currentTime]);
 }
