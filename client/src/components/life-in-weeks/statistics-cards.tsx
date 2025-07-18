@@ -10,6 +10,7 @@ interface StatisticsCardsProps {
       daysPassed: number;
       totalDays: number;
     };
+    currentTime: Date;
   };
   birthDate: string;
 }
@@ -25,20 +26,15 @@ export default function StatisticsCards({ calculations, birthDate }: StatisticsC
 
   const [lifeDisplayMode, setLifeDisplayMode] = useState<LifeDisplayMode>('percentage');
   const [yearDisplayMode, setYearDisplayMode] = useState<YearDisplayMode>('percentage');
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  // Update time every minute for real-time countdown
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000); // Update every minute
-
-    return () => clearInterval(interval);
-  }, []);
 
   // Calculate different time units for life progress with precise real-time values
   const getLifeDisplayValue = () => {
-    const { weeksRemaining, lifePercentage } = calculations;
+    const { weeksRemaining, lifePercentage, currentTime } = calculations;
+    
+    // Safety check for currentTime
+    if (!currentTime) {
+      return { value: `${lifePercentage}%`, label: 'Of your journey' };
+    }
     
     // Calculate precise remaining time based on exact birth date and current time
     const birth = new Date(birthDate || '');
@@ -93,6 +89,13 @@ export default function StatisticsCards({ calculations, birthDate }: StatisticsC
   // Calculate different time units for year progress with real-time precision
   const getYearDisplayValue = () => {
     const { percentage } = calculations.yearProgress;
+    const { currentTime } = calculations;
+    
+    // Safety check for currentTime
+    if (!currentTime) {
+      return { value: `${percentage}%`, label: 'This year' };
+    }
+    
     const currentYear = currentTime.getFullYear();
     const endOfYear = new Date(currentYear, 11, 31, 23, 59, 59, 999);
     const timeRemainingInYear = endOfYear.getTime() - currentTime.getTime();

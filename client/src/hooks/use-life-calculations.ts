@@ -7,7 +7,7 @@ export function useLifeCalculations(birthDate: string) {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
-    }, 60000); // Update every minute
+    }, 60000); // Update every minute for real-time countdown
 
     return () => clearInterval(interval);
   }, []);
@@ -35,7 +35,8 @@ export function useLifeCalculations(birthDate: string) {
         weeksLived: 0,
         weeksRemaining: totalLifeWeeks,
         lifePercentage: 0,
-        yearProgress
+        yearProgress,
+        currentTime: currentDate
       };
     }
     
@@ -47,7 +48,8 @@ export function useLifeCalculations(birthDate: string) {
         weeksLived: 0,
         weeksRemaining: totalLifeWeeks,
         lifePercentage: 0,
-        yearProgress
+        yearProgress,
+        currentTime: currentDate
       };
     }
     
@@ -63,7 +65,8 @@ export function useLifeCalculations(birthDate: string) {
       weeksLived,
       weeksRemaining,
       lifePercentage,
-      yearProgress
+      yearProgress,
+      currentTime: currentDate // Pass current time for real-time calculations
     };
   }, [birthDate, currentTime]);
 }
