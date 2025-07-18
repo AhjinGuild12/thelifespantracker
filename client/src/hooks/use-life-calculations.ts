@@ -3,11 +3,11 @@ import { useMemo, useState, useEffect } from "react";
 export function useLifeCalculations(birthDate: string) {
   const [currentTime, setCurrentTime] = useState(new Date());
 
-  // Update time every minute for real-time calculations
+  // Update time every second for real-time calculations
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
-    }, 60000); // Update every minute for real-time countdown
+    }, 1000); // Update every second for immediate real-time response
 
     return () => clearInterval(interval);
   }, []);

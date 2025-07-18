@@ -29,17 +29,15 @@ export default function StatisticsCards({ calculations, birthDate }: StatisticsC
 
   // Calculate different time units for life progress with precise real-time values
   const getLifeDisplayValue = () => {
-    const { weeksRemaining, lifePercentage, currentTime } = calculations;
+    const { weeksRemaining, lifePercentage } = calculations;
     
-    // Safety check for currentTime
-    if (!currentTime) {
-      return { value: `${lifePercentage}%`, label: 'Of your journey' };
-    }
+    // Use current moment for maximum accuracy - no delay
+    const currentMoment = new Date();
     
     // Calculate precise remaining time based on exact birth date and current time
     const birth = new Date(birthDate || '');
     const endOfLife = new Date(birth.getTime() + (80 * 365.25 * 24 * 60 * 60 * 1000)); // 80 years from birth
-    const timeRemaining = endOfLife.getTime() - currentTime.getTime();
+    const timeRemaining = endOfLife.getTime() - currentMoment.getTime();
     
     if (timeRemaining <= 0 || !birthDate) {
       // Fallback to week-based calculations
@@ -89,16 +87,12 @@ export default function StatisticsCards({ calculations, birthDate }: StatisticsC
   // Calculate different time units for year progress with real-time precision
   const getYearDisplayValue = () => {
     const { percentage } = calculations.yearProgress;
-    const { currentTime } = calculations;
     
-    // Safety check for currentTime
-    if (!currentTime) {
-      return { value: `${percentage}%`, label: 'This year' };
-    }
-    
-    const currentYear = currentTime.getFullYear();
+    // Use current moment for maximum accuracy - no delay
+    const currentMoment = new Date();
+    const currentYear = currentMoment.getFullYear();
     const endOfYear = new Date(currentYear, 11, 31, 23, 59, 59, 999);
-    const timeRemainingInYear = endOfYear.getTime() - currentTime.getTime();
+    const timeRemainingInYear = endOfYear.getTime() - currentMoment.getTime();
     
     if (timeRemainingInYear <= 0) {
       return { value: '0', label: 'Year complete' };

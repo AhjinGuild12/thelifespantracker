@@ -38,6 +38,11 @@ export default function LifeInWeeksPage() {
           />
         </section>
 
+        {/* Debug timezone and time accuracy */}
+        <div style={{padding: '8px', background: '#f8f9fa', margin: '10px 0', borderRadius: '4px', fontSize: '12px', textAlign: 'center', color: '#666'}}>
+          Local time: {new Date().toLocaleString()} | Timezone: {Intl.DateTimeFormat().resolvedOptions().timeZone}
+        </div>
+
         {/* Statistics Cards */}
         <StatisticsCards calculations={calculations} birthDate={birthDate} />
 
