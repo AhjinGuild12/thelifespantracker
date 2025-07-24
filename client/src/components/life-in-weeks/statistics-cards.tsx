@@ -15,8 +15,8 @@ interface StatisticsCardsProps {
   birthDate: string;
 }
 
-type LifeDisplayMode = 'percentage' | 'weeks' | 'months' | 'years' | 'days' | 'minutes';
-type YearDisplayMode = 'percentage' | 'weeks' | 'months' | 'days' | 'hours' | 'minutes';
+type LifeDisplayMode = 'percentage' | 'weeks' | 'months' | 'years' | 'days' | 'minutes' | 'seconds';
+type YearDisplayMode = 'percentage' | 'weeks' | 'months' | 'days' | 'hours' | 'minutes' | 'seconds';
 
 export default function StatisticsCards({ calculations, birthDate }: StatisticsCardsProps) {
   const progressLivedRef = useRef<HTMLDivElement>(null);
@@ -60,6 +60,7 @@ export default function StatisticsCards({ calculations, birthDate }: StatisticsC
     }
     
     // Real-time precise calculations
+    const secondsRemaining = Math.floor(timeRemaining / 1000);
     const minutesRemaining = Math.floor(timeRemaining / (60 * 1000));
     const hoursRemaining = Math.floor(timeRemaining / (60 * 60 * 1000));
     const daysRemaining = Math.floor(timeRemaining / (24 * 60 * 60 * 1000));
@@ -79,6 +80,8 @@ export default function StatisticsCards({ calculations, birthDate }: StatisticsC
         return { value: daysRemaining.toLocaleString(), label: 'Days remaining' };
       case 'minutes':
         return { value: minutesRemaining.toLocaleString(), label: 'Minutes remaining' };
+      case 'seconds':
+        return { value: secondsRemaining.toLocaleString(), label: 'Seconds remaining' };
       default:
         return { value: `${lifePercentage}%`, label: 'Of your journey' };
     }
@@ -98,6 +101,7 @@ export default function StatisticsCards({ calculations, birthDate }: StatisticsC
       return { value: '0', label: 'Year complete' };
     }
     
+    const secondsRemainingInYear = Math.floor(timeRemainingInYear / 1000);
     const minutesRemainingInYear = Math.floor(timeRemainingInYear / (60 * 1000));
     const hoursRemainingInYear = Math.floor(timeRemainingInYear / (60 * 60 * 1000));
     const daysRemainingInYear = Math.floor(timeRemainingInYear / (24 * 60 * 60 * 1000));
@@ -117,6 +121,8 @@ export default function StatisticsCards({ calculations, birthDate }: StatisticsC
         return { value: hoursRemainingInYear.toLocaleString(), label: 'Hours left in year' };
       case 'minutes':
         return { value: minutesRemainingInYear.toLocaleString(), label: 'Minutes left in year' };
+      case 'seconds':
+        return { value: secondsRemainingInYear.toLocaleString(), label: 'Seconds left in year' };
       default:
         return { value: `${percentage}%`, label: 'This year' };
     }
@@ -124,14 +130,14 @@ export default function StatisticsCards({ calculations, birthDate }: StatisticsC
 
   // Cycle through display modes
   const cycleLifeDisplayMode = () => {
-    const modes: LifeDisplayMode[] = ['percentage', 'weeks', 'months', 'years', 'days', 'minutes'];
+    const modes: LifeDisplayMode[] = ['percentage', 'weeks', 'months', 'years', 'days', 'minutes', 'seconds'];
     const currentIndex = modes.indexOf(lifeDisplayMode);
     const nextIndex = (currentIndex + 1) % modes.length;
     setLifeDisplayMode(modes[nextIndex]);
   };
 
   const cycleYearDisplayMode = () => {
-    const modes: YearDisplayMode[] = ['percentage', 'weeks', 'months', 'days', 'hours', 'minutes'];
+    const modes: YearDisplayMode[] = ['percentage', 'weeks', 'months', 'days', 'hours', 'minutes', 'seconds'];
     const currentIndex = modes.indexOf(yearDisplayMode);
     const nextIndex = (currentIndex + 1) % modes.length;
     setYearDisplayMode(modes[nextIndex]);
