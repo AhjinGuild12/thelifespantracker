@@ -15,7 +15,7 @@ interface StatisticsCardsProps {
   birthDate: string;
 }
 
-type LifeDisplayMode = 'percentage' | 'weeks' | 'months' | 'years' | 'days' | 'minutes' | 'seconds';
+type LifeDisplayMode = 'percentage' | 'weeks' | 'months' | 'years' | 'days' | 'hours' | 'minutes' | 'seconds';
 type YearDisplayMode = 'percentage' | 'weeks' | 'months' | 'days' | 'hours' | 'minutes' | 'seconds';
 
 export default function StatisticsCards({ calculations, birthDate }: StatisticsCardsProps) {
@@ -78,6 +78,8 @@ export default function StatisticsCards({ calculations, birthDate }: StatisticsC
         return { value: yearsRemaining.toLocaleString(), label: 'Years remaining' };
       case 'days':
         return { value: daysRemaining.toLocaleString(), label: 'Days remaining' };
+      case 'hours':
+        return { value: hoursRemaining.toLocaleString(), label: 'Hours remaining' };
       case 'minutes':
         return { value: minutesRemaining.toLocaleString(), label: 'Minutes remaining' };
       case 'seconds':
@@ -130,7 +132,7 @@ export default function StatisticsCards({ calculations, birthDate }: StatisticsC
 
   // Cycle through display modes
   const cycleLifeDisplayMode = () => {
-    const modes: LifeDisplayMode[] = ['percentage', 'weeks', 'months', 'years', 'days', 'minutes', 'seconds'];
+    const modes: LifeDisplayMode[] = ['percentage', 'weeks', 'months', 'years', 'days', 'hours', 'minutes', 'seconds'];
     const currentIndex = modes.indexOf(lifeDisplayMode);
     const nextIndex = (currentIndex + 1) % modes.length;
     setLifeDisplayMode(modes[nextIndex]);
