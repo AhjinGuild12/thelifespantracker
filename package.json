@@ -101,5 +101,11 @@
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8"
+  },
+  "overrides": {
+    "sucrase": {
+      "glob": "11.1.0"
+    },
+    "qs": "6.14.1"
   }
 }
