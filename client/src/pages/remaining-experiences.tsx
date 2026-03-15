@@ -13,11 +13,14 @@ import {
 } from "@/hooks/use-experience-calculations";
 import type { Person, Experience } from "@/types/experiences";
 
+import type { SaveStatus } from "@/components/auth/SaveIndicator";
+
 interface RemainingExperiencesProps {
   people: Person[];
   setPeople: React.Dispatch<React.SetStateAction<Person[]>>;
   customExperiences: Experience[];
   setCustomExperiences: React.Dispatch<React.SetStateAction<Experience[]>>;
+  saveStatus?: SaveStatus;
 }
 
 export default function RemainingExperiencesPage({
@@ -25,6 +28,7 @@ export default function RemainingExperiencesPage({
   setPeople,
   customExperiences,
   setCustomExperiences,
+  saveStatus,
 }: RemainingExperiencesProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingPerson, setEditingPerson] = useState<Person | null>(null);
@@ -83,7 +87,7 @@ export default function RemainingExperiencesPage({
   return (
     <div className="exp-container">
       <div className="exp-main">
-        <Navigation />
+        <Navigation saveStatus={saveStatus} />
 
         <header className="exp-header">
           <h1 className="exp-title">Remaining Experiences</h1>

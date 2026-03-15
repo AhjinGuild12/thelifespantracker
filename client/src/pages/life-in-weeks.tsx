@@ -6,6 +6,8 @@ import InspirationQuote from "@/components/life-in-weeks/inspiration-quote";
 import Navigation from "@/components/navigation";
 import { useLifeCalculations } from "@/hooks/use-life-calculations";
 
+import type { SaveStatus } from "@/components/auth/SaveIndicator";
+
 export type ViewMode = 'lifetime' | 'year2025' | 'monthly';
 
 interface LifeInWeeksProps {
@@ -15,6 +17,7 @@ interface LifeInWeeksProps {
   setCurrentView: (value: ViewMode) => void;
   selectedMonth: number;
   setSelectedMonth: (value: number) => void;
+  saveStatus?: SaveStatus;
 }
 
 export default function LifeInWeeksPage({
@@ -24,6 +27,7 @@ export default function LifeInWeeksPage({
   setCurrentView,
   selectedMonth,
   setSelectedMonth,
+  saveStatus,
 }: LifeInWeeksProps) {
 
   const calculations = useLifeCalculations(birthDate);
@@ -31,7 +35,7 @@ export default function LifeInWeeksPage({
   return (
     <div className="life-weeks-container">
       <div className="life-weeks-main">
-        <Navigation />
+        <Navigation saveStatus={saveStatus} />
 
         {/* Header */}
         <header className="life-weeks-header">

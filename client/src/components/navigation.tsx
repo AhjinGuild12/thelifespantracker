@@ -1,7 +1,13 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
+import { AuthButton } from "@/components/auth/AuthButton";
+import type { SaveStatus } from "@/components/auth/SaveIndicator";
 
-export default function Navigation() {
+interface NavigationProps {
+  saveStatus?: SaveStatus;
+}
+
+export default function Navigation({ saveStatus }: NavigationProps) {
   const [location] = useLocation();
 
   return (
@@ -22,6 +28,9 @@ export default function Navigation() {
         >
           Remaining Experiences
         </Link>
+      </div>
+      <div className="absolute right-0 top-0">
+        <AuthButton saveStatus={saveStatus} />
       </div>
     </nav>
   );
