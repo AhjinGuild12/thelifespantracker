@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -535,4 +537,747 @@
 
 .footer-link:hover {
   color: var(--color-primary-hover);
+}
+
+/* ============================================
+   Remaining Experiences Feature
+   ============================================ */
+
+:root {
+  --font-family-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --color-exp-amber: hsl(35, 82%, 55%);
+  --color-exp-amber-soft: hsla(35, 82%, 55%, 0.1);
+  --color-exp-elapsed: hsl(210, 6%, 80%);
+  --color-exp-big-number: 56px;
+}
+
+.dark {
+  --color-exp-amber: hsl(35, 78%, 62%);
+  --color-exp-amber-soft: hsla(35, 78%, 62%, 0.08);
+  --color-exp-elapsed: hsl(210, 6%, 32%);
+}
+
+/* --- Navigation --- */
+.exp-nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-32);
+  padding-bottom: var(--space-16);
+  border-bottom: 1px solid var(--color-card-border);
+}
+
+.exp-nav-tabs {
+  display: flex;
+  gap: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.exp-nav-tab {
+  padding: var(--space-8) var(--space-20);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: all var(--duration-normal) var(--ease-standard);
+  cursor: pointer;
+}
+
+.exp-nav-tab:hover {
+  color: var(--color-text);
+  background: var(--color-secondary);
+}
+
+.exp-nav-tab.active {
+  color: var(--color-btn-primary-text);
+  background: var(--color-primary);
+}
+
+/* --- Page Container --- */
+.exp-container {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-family-base);
+  min-height: 100vh;
+}
+
+.exp-main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: var(--space-24);
+}
+
+.exp-header {
+  text-align: center;
+  margin-bottom: var(--space-48);
+}
+
+.exp-title {
+  margin-bottom: var(--space-12);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+}
+
+.exp-subtitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* --- Empty State --- */
+.exp-empty {
+  text-align: center;
+  padding: var(--space-48) var(--space-24);
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.exp-empty-icon {
+  color: var(--color-exp-amber);
+  margin-bottom: var(--space-24);
+  opacity: 0.8;
+}
+
+.exp-empty-title {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-3xl);
+  font-weight: 400;
+  margin-bottom: var(--space-12);
+  color: var(--color-text);
+}
+
+.exp-empty-text {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-32);
+  max-width: 360px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.exp-empty-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-12) var(--space-24);
+  background: var(--color-exp-amber);
+  color: white;
+  border: none;
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+}
+
+.exp-empty-btn:hover {
+  filter: brightness(0.92);
+  transform: translateY(-1px);
+}
+
+.exp-empty-btn:active {
+  transform: translateY(0);
+}
+
+/* --- Dialog --- */
+.exp-dialog {
+  background: var(--color-background) !important;
+  border-color: var(--color-card-border) !important;
+}
+
+.exp-dialog-title {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-2xl) !important;
+  font-weight: 500 !important;
+  color: var(--color-text);
+}
+
+.exp-dialog-desc {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
+}
+
+.exp-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+  padding: var(--space-8) 0;
+}
+
+.exp-dialog-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.exp-dialog-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.exp-dialog-input {
+  padding: var(--space-12) var(--space-16);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  font-family: var(--font-family-base);
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.exp-dialog-input:focus {
+  outline: none;
+  border-color: var(--color-exp-amber);
+  box-shadow: 0 0 0 3px var(--color-exp-amber-soft);
+}
+
+.exp-dialog-hint {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.exp-dialog-slider {
+  margin-top: var(--space-4);
+}
+
+.exp-dialog-slider-value {
+  color: var(--color-exp-amber);
+  font-weight: var(--font-weight-semibold);
+}
+
+.exp-dialog-slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-4);
+}
+
+.exp-dialog-cancel {
+  padding: var(--space-8) var(--space-16);
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.exp-dialog-cancel:hover {
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.exp-dialog-save {
+  padding: var(--space-8) var(--space-16);
+  background: var(--color-exp-amber);
+  color: white;
+  border: none;
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.exp-dialog-save:hover {
+  filter: brightness(0.92);
+}
+
+.exp-dialog-save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: none;
+}
+
+/* --- Person Card --- */
+.exp-person-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-left: 3px solid;
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--duration-normal) var(--ease-standard);
+}
+
+.exp-person-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.exp-person-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-16);
+}
+
+.exp-person-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.exp-person-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.exp-person-name {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+
+.exp-person-meta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.exp-person-actions {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.exp-person-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.exp-person-action-btn:hover {
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.exp-person-action-btn--danger:hover {
+  background: hsl(0, 60%, 94%);
+  color: hsl(0, 60%, 50%);
+}
+
+.dark .exp-person-action-btn--danger:hover {
+  background: hsl(0, 40%, 20%);
+  color: hsl(0, 60%, 65%);
+}
+
+.exp-person-progress {
+  margin-top: var(--space-8);
+}
+
+.exp-person-progress-bar {
+  height: 4px;
+  background: var(--color-secondary);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: var(--space-6);
+}
+
+.exp-person-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width var(--duration-normal) var(--ease-standard);
+}
+
+.exp-person-progress-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* --- Experience Selector (Chips) --- */
+.exp-selector {
+  margin-top: var(--space-16);
+}
+
+.exp-selector-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-8);
+}
+
+.exp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+}
+
+.exp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-12);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+  font-family: var(--font-family-base);
+}
+
+.exp-chip:hover {
+  border-color: var(--color-exp-amber);
+  background: var(--color-exp-amber-soft);
+}
+
+.exp-chip--selected {
+  background: var(--color-exp-amber);
+  border-color: var(--color-exp-amber);
+  color: white;
+}
+
+.exp-chip--selected:hover {
+  background: var(--color-exp-amber);
+  filter: brightness(0.92);
+  color: white;
+}
+
+.exp-chip--dimmed {
+  opacity: 0.5;
+}
+
+.exp-chip--dimmed:hover {
+  opacity: 1;
+}
+
+.exp-chip--add {
+  border-style: dashed;
+  color: var(--color-text-secondary);
+}
+
+.exp-chip--add:hover {
+  color: var(--color-exp-amber);
+}
+
+.exp-chip-freq {
+  font-size: var(--font-size-xs);
+  opacity: 0.7;
+}
+
+.exp-chip--selected .exp-chip-freq {
+  opacity: 0.85;
+}
+
+/* Custom experience inline form */
+.exp-custom-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  align-items: center;
+  margin-top: var(--space-12);
+  padding: var(--space-12);
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-base);
+}
+
+.exp-custom-input {
+  padding: var(--space-6) var(--space-12);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-base);
+  flex: 1;
+  min-width: 140px;
+}
+
+.exp-custom-input:focus {
+  outline: none;
+  border-color: var(--color-exp-amber);
+  box-shadow: 0 0 0 2px var(--color-exp-amber-soft);
+}
+
+.exp-custom-input--small {
+  flex: 0;
+  min-width: 60px;
+  width: 70px;
+  text-align: center;
+}
+
+.exp-custom-freq {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.exp-custom-freq-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.exp-custom-save {
+  padding: var(--space-6) var(--space-16);
+  background: var(--color-exp-amber);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.exp-custom-save:hover {
+  filter: brightness(0.92);
+}
+
+.exp-custom-save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --- Experience Card (THE emotional card) --- */
+.exp-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-left: 3px solid;
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--duration-normal) var(--ease-standard);
+}
+
+.exp-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.exp-card-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-16);
+  margin-bottom: var(--space-20);
+}
+
+.exp-card-big-number {
+  font-family: var(--font-family-display);
+  font-size: var(--color-exp-big-number);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+
+.exp-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: var(--space-8);
+}
+
+.exp-card-experience {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.exp-card-person {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}
+
+/* --- Dot Grid --- */
+.exp-dot-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.exp-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.exp-dot--elapsed {
+  background: var(--color-exp-elapsed);
+}
+
+.exp-dot--current {
+  border-radius: 50%;
+}
+
+.exp-dot--remaining {
+  background: transparent;
+  border: 1.5px solid;
+}
+
+/* --- Condensed Bar (for >100 dots) --- */
+.exp-grid-bar {
+  width: 100%;
+}
+
+.exp-grid-bar-track {
+  display: flex;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  gap: 1px;
+}
+
+.exp-grid-bar-elapsed {
+  background: var(--color-exp-elapsed);
+  transition: width var(--duration-normal) var(--ease-standard);
+}
+
+.exp-grid-bar-remaining {
+  transition: width var(--duration-normal) var(--ease-standard);
+  opacity: 0.7;
+}
+
+.exp-grid-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-6);
+}
+
+.exp-grid-bar-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.exp-grid-bar-label--remaining {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+/* --- Summary Banner --- */
+.exp-summary {
+  background: var(--color-exp-amber-soft);
+  border: 1px solid var(--color-exp-amber);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  margin-bottom: var(--space-32);
+}
+
+.exp-summary-line {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.exp-summary-line + .exp-summary-line {
+  margin-top: var(--space-8);
+}
+
+/* --- People List & Sections --- */
+.exp-people-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-48);
+}
+
+.exp-person-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.exp-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-16);
+  margin-top: var(--space-8);
+}
+
+.exp-add-another {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  padding: var(--space-16);
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+  font-family: var(--font-family-base);
+  width: 100%;
+}
+
+.exp-add-another:hover {
+  border-color: var(--color-exp-amber);
+  color: var(--color-exp-amber);
+  background: var(--color-exp-amber-soft);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .exp-main {
+    padding: var(--space-16);
+  }
+
+  .exp-card-header {
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .exp-card-big-number {
+    font-size: 48px;
+  }
+
+  .exp-results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .exp-nav-tabs {
+    width: 100%;
+  }
+
+  .exp-nav-tab {
+    flex: 1;
+    text-align: center;
+    font-size: var(--font-size-sm);
+    padding: var(--space-8) var(--space-12);
+  }
+}
+
+@media (max-width: 480px) {
+  .exp-card-big-number {
+    font-size: 40px;
+  }
+
+  .exp-empty-title {
+    font-size: var(--font-size-2xl);
+  }
 }

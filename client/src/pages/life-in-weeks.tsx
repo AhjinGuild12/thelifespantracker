@@ -1,23 +1,38 @@
-import { useState, useEffect } from "react";
 import AgeInput from "@/components/life-in-weeks/age-input";
 import ViewSelector from "@/components/life-in-weeks/view-selector";
 import StatisticsCards from "@/components/life-in-weeks/statistics-cards";
 import WeeksGrid from "@/components/life-in-weeks/weeks-grid";
 import InspirationQuote from "@/components/life-in-weeks/inspiration-quote";
+import Navigation from "@/components/navigation";
 import { useLifeCalculations } from "@/hooks/use-life-calculations";
 
 export type ViewMode = 'lifetime' | 'year2025' | 'monthly';
 
-export default function LifeInWeeksPage() {
-  const [birthDate, setBirthDate] = useState<string>("");
-  const [currentView, setCurrentView] = useState<ViewMode>('lifetime');
-  const [selectedMonth, setSelectedMonth] = useState<number>(6); // July (0-indexed)
-  
+interface LifeInWeeksProps {
+  birthDate: string;
+  setBirthDate: (value: string) => void;
+  currentView: ViewMode;
+  setCurrentView: (value: ViewMode) => void;
+  selectedMonth: number;
+  setSelectedMonth: (value: number) => void;
+}
+
+export default function LifeInWeeksPage({
+  birthDate,
+  setBirthDate,
+  currentView,
+  setCurrentView,
+  selectedMonth,
+  setSelectedMonth,
+}: LifeInWeeksProps) {
+
   const calculations = useLifeCalculations(birthDate);
 
   return (
     <div className="life-weeks-container">
       <div className="life-weeks-main">
+        <Navigation />
+
         {/* Header */}
         <header className="life-weeks-header">
           <h1 className="life-weeks-title">Life In Weeks</h1>
