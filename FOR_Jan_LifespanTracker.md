@@ -194,6 +194,76 @@ Building a tool that visualises this idea concretely (not as a metaphor, but as 
 
 ---
 
+## 9. Authentication & Data Persistence (March 2026)
+
+### The Problem
+Every page refresh wiped all your data — birth date, people, experiences, gone. The original Express backend with Passport/Drizzle/Neon was scaffolded but never wired up.
+
+### The Solution: Supabase
+Instead of building out the unused Express backend, we went with **Supabase** — it runs entirely client-side (no deployment changes needed), provides both auth and PostgreSQL in one service, and the app stays fully usable without signing in.
+
+### How It Works
+
+```
+User opens app (no sign-in required — everything works as before)
+        ↓
+User clicks "Sign In" → AuthDialog appears
+        ↓
+Signs in with email/password (Google/Apple OAuth ready but not configured yet)
+        ↓
+useSupabaseSync loads their data from the `user_data` table
+        ↓
+React state gets hydrated with saved birth_date, people, custom_experiences
+        ↓
+Any state change triggers a debounced save (1500ms) back to Supabase
+        ↓
+Save indicator shows "Saving…" → "Saved" in the nav bar
+```
+
+### Architecture
+
+- **Supabase Auth** handles sign-in/sign-up/sessions (JWT-based, no server needed)
+- **`user_data` table** stores one row per user with `birth_date` (TEXT), `people` (JSONB), `custom_experiences` (JSONB)
+- **Row Level Security (RLS)** ensures users can only read/write their own row
+- **`isHydratingRef`** prevents the save-on-load loop (loading data from DB would trigger a "state changed, save!" cycle without it)
+
+### New Files
+
+| File | Purpose |
+|------|---------|
+| `client/src/lib/supabase.ts` | Supabase client init, graceful fallback when env vars missing |
+| `client/src/contexts/AuthContext.tsx` | Auth state + methods (signIn, signUp, signOut) |
+| `client/src/hooks/useAuth.ts` | Thin `useContext(AuthContext)` wrapper |
+| `client/src/hooks/use-supabase-sync.ts` | Load on login, debounced save on change, clear on logout |
+| `client/src/components/auth/AuthButton.tsx` | "Sign In" button / avatar dropdown in nav |
+| `client/src/components/auth/AuthDialog.tsx` | Sign-in modal (Google, Apple, email/password) |
+| `client/src/components/auth/SaveIndicator.tsx` | "Saving…" / "Saved" / "Failed to save" indicator |
+| `supabase/migrations/20260315_create_user_data.sql` | Database migration for the user_data table + RLS |
+
+### Key Design Decisions
+
+1. **Single JSONB columns** — `people` and `custom_experiences` are stored as JSONB arrays, not separate tables. This keeps queries simple (one row per user, one read, one write) and maps 1:1 to the React state structure.
+
+2. **Debounced saves (1500ms)** — Typing a birth date or toggling experiences fires rapid state changes. The debounce waits for the user to stop making changes before hitting Supabase.
+
+3. **No server changes** — The Express backend remains untouched. Supabase client library talks directly to the Supabase API. The app is still a static SPA on Vercel.
+
+4. **Graceful degradation** — If Supabase isn't configured (no env vars), the auth button simply doesn't render. The app works exactly as before.
+
+### Environment Setup
+
+- **Local:** `.env` file with `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (gitignored)
+- **Vercel:** Same two env vars added via `vercel env add`
+- **Supabase project:** `lifespan-tracker` in Oceania (Sydney) region, linked via Supabase CLI
+
+### What's Next
+
+- Google OAuth (needs Google Cloud Console OAuth credentials)
+- Apple Sign-In (needs Apple Developer Account, $99/yr)
+- B2: Dead code cleanup — remove the unused `server/`, Passport, Drizzle, Neon deps
+
+---
+
 ## Quick Reference
 
 | File | What it does |
@@ -202,11 +272,16 @@ Building a tool that visualises this idea concretely (not as a metaphor, but as 
 | `client/src/components/life-in-weeks/weeks-grid.tsx` | The box grid — the visual centrepiece |
 | `client/src/pages/life-in-weeks.tsx` | Main page, holds birthDate + currentView state |
 | `client/src/index.css` | Grid box styles (.lived, .current, .empty) |
+| `client/src/lib/supabase.ts` | Supabase client init |
+| `client/src/contexts/AuthContext.tsx` | Auth context provider |
+| `client/src/hooks/use-supabase-sync.ts` | Data sync with Supabase |
 
 **To change the assumed lifespan:** Update `totalLifeWeeks = 4160` in `use-life-calculations.ts` (and `WeeksGrid.tsx` which has its own copy of `totalLifeWeeks = 4160`).
 
 **To add a new view:** Add it to the `ViewMode` type in `life-in-weeks.tsx`, add a tab in `ViewSelector`, and add a render function in `WeeksGrid`.
 
+**To add a new auth provider:** Enable it in Supabase Dashboard → Authentication → Providers, then add a button in `AuthDialog.tsx` calling `supabase.auth.signInWithOAuth({ provider: 'new_provider' })`.
+
 ---
 
-*Built with React + TypeScript + Vite + shadcn/ui + Tailwind. Inspired by Oliver Burkeman's Four Thousand Weeks.*
+*Built with React + TypeScript + Vite + shadcn/ui + Tailwind + Supabase. Inspired by Oliver Burkeman's Four Thousand Weeks.*
