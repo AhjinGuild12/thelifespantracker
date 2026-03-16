@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import type { Person, Experience } from "@/types/experiences";
+import type { CalendarNote } from "@/types/calendar";
 
 type SaveStatus = "idle" | "saving" | "saved" | "error";
 
@@ -11,6 +12,7 @@ interface SyncData {
   birthDate: string;
   people: Person[];
   customExperiences: Experience[];
+  calendarNotes: CalendarNote[];
 }
 
 interface UseSyncOptions {
@@ -18,9 +20,11 @@ interface UseSyncOptions {
   birthDate: string;
   people: Person[];
   customExperiences: Experience[];
+  calendarNotes: CalendarNote[];
   setBirthDate: (v: string) => void;
   setPeople: (v: Person[]) => void;
   setCustomExperiences: (v: Experience[]) => void;
+  setCalendarNotes: (v: CalendarNote[]) => void;
 }
 
 export function useSupabaseSync({
@@ -28,9 +32,11 @@ export function useSupabaseSync({
   birthDate,
   people,
   customExperiences,
+  calendarNotes,
   setBirthDate,
   setPeople,
   setCustomExperiences,
+  setCalendarNotes,
 }: UseSyncOptions) {
   const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
   const isHydratingRef = useRef(false);
@@ -45,6 +51,7 @@ export function useSupabaseSync({
         setBirthDate("");
         setPeople([]);
         setCustomExperiences([]);
+        setCalendarNotes([]);
         previousUserIdRef.current = null;
       }
       return;
@@ -59,7 +66,7 @@ export function useSupabaseSync({
       try {
         const { data, error } = await supabase
           .from("user_data")
-          .select("birth_date, people, custom_experiences")
+          .select("birth_date, people, custom_experiences, calendar_notes")
           .eq("id", user.id)
           .single();
 
@@ -71,6 +78,8 @@ export function useSupabaseSync({
             people: people.length > 0 ? people : [],
             custom_experiences:
               customExperiences.length > 0 ? customExperiences : [],
+            calendar_notes:
+              calendarNotes.length > 0 ? calendarNotes : [],
           });
           setSaveStatus("saved");
         } else if (error) {
@@ -86,6 +95,8 @@ export function useSupabaseSync({
             Array.isArray(data.custom_experiences)
           )
             setCustomExperiences(data.custom_experiences as Experience[]);
+          if (data.calendar_notes && Array.isArray(data.calendar_notes))
+            setCalendarNotes(data.calendar_notes as CalendarNote[]);
           setSaveStatus("saved");
         }
       } catch (err) {
@@ -119,6 +130,7 @@ export function useSupabaseSync({
             birth_date: data.birthDate || null,
             people: data.people,
             custom_experiences: data.customExperiences,
+            calendar_notes: data.calendarNotes,
             updated_at: new Date().toISOString(),
           });
 
@@ -141,8 +153,8 @@ export function useSupabaseSync({
   useEffect(() => {
     if (!user || isHydratingRef.current) return;
 
-    saveToSupabase({ birthDate, people, customExperiences });
-  }, [user, birthDate, people, customExperiences, saveToSupabase]);
+    saveToSupabase({ birthDate, people, customExperiences, calendarNotes });
+  }, [user, birthDate, people, customExperiences, calendarNotes, saveToSupabase]);
 
   // Cleanup debounce timer on unmount or user change
   useEffect(() => {

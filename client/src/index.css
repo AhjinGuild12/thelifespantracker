@@ -1270,7 +1270,7 @@
     flex: 1;
     text-align: center;
     font-size: var(--font-size-sm);
-    padding: var(--space-8) var(--space-12);
+    padding: var(--space-8) var(--space-8);
   }
 }
 
@@ -1282,4 +1282,611 @@
   .exp-empty-title {
     font-size: var(--font-size-2xl);
   }
+}
+
+/* ============================================
+   Calendar Feature
+   ============================================ */
+
+/* --- Page Container --- */
+.cal-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-24);
+}
+
+/* --- Year Selector --- */
+.cal-year-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-16);
+  margin-bottom: var(--space-32);
+}
+
+.cal-year-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.cal-year-label {
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-3xl);
+  font-weight: 500;
+  color: var(--color-text);
+  min-width: 80px;
+  text-align: center;
+}
+
+.cal-year-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.cal-year-btn:hover {
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.cal-today-btn {
+  padding: var(--space-6) var(--space-16);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+  font-family: var(--font-family-base);
+}
+
+.cal-today-btn:hover {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+  border-color: var(--color-primary);
+}
+
+/* --- Calendar Grid --- */
+.cal-grid-wrapper {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-48);
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-standard);
+  overflow-x: auto;
+}
+
+.cal-grid-wrapper.fade-in {
+  opacity: 1;
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: 56px repeat(31, 1fr);
+  gap: 2px;
+  min-width: 700px;
+}
+
+.cal-grid-corner {
+  /* Empty top-left corner cell */
+}
+
+.cal-grid-day-header {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding-bottom: var(--space-4);
+}
+
+.cal-grid-month-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  padding-right: var(--space-8);
+  position: sticky;
+  left: 0;
+  background: var(--color-surface);
+  z-index: 1;
+}
+
+.cal-grid-cell {
+  aspect-ratio: 1;
+  min-height: 16px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+  background: var(--color-background);
+  border: 1px solid transparent;
+  position: relative;
+}
+
+.cal-grid-cell:hover {
+  transform: scale(1.15);
+  z-index: 2;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.cal-grid-cell--empty {
+  background: transparent;
+  cursor: default;
+  border: none;
+}
+
+.cal-grid-cell--empty:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.cal-grid-cell--weekend {
+  background: var(--color-secondary);
+}
+
+.cal-grid-cell--today {
+  border-color: var(--color-warning);
+  box-shadow: 0 0 0 1px var(--color-warning);
+  animation: cal-pulse 2s ease-in-out infinite;
+}
+
+@keyframes cal-pulse {
+  0%, 100% { box-shadow: 0 0 0 1px var(--color-warning); }
+  50% { box-shadow: 0 0 0 3px rgba(var(--color-warning-rgb), 0.3); }
+}
+
+.cal-grid-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Multi-day event fills --- */
+.cal-grid-multiday {
+  position: absolute;
+  left: 0;
+  right: 0;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.cal-grid-multiday--start {
+  border-radius: 3px 0 0 3px;
+}
+
+.cal-grid-multiday--middle {
+  border-radius: 0;
+}
+
+.cal-grid-multiday--end {
+  border-radius: 0 3px 3px 0;
+}
+
+/* --- Sheet Styling --- */
+.cal-sheet {
+  background: var(--color-background) !important;
+  border-color: var(--color-card-border) !important;
+  overflow-y: auto;
+}
+
+.cal-sheet-title {
+  font-family: var(--font-family-display) !important;
+  font-size: var(--font-size-xl) !important;
+  font-weight: 500 !important;
+  color: var(--color-text);
+}
+
+.cal-sheet-desc {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.cal-sheet-notes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  margin-top: var(--space-24);
+  margin-bottom: var(--space-24);
+}
+
+.cal-sheet-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.cal-sheet-section-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+/* --- Note Card --- */
+.cal-note-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-left: 3px solid;
+  border-radius: var(--radius-base);
+  padding: var(--space-16);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-12);
+}
+
+.cal-note-text {
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  line-height: 1.5;
+  margin: 0;
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.cal-note-actions {
+  display: flex;
+  gap: var(--space-4);
+  flex-shrink: 0;
+}
+
+.cal-note-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.cal-note-action-btn:hover {
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.cal-note-action-btn--danger:hover {
+  background: hsl(0, 60%, 94%);
+  color: hsl(0, 60%, 50%);
+}
+
+.dark .cal-note-action-btn--danger:hover {
+  background: hsl(0, 40%, 20%);
+  color: hsl(0, 60%, 65%);
+}
+
+.cal-note-content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* --- Date Range Badge --- */
+.cal-note-daterange {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-6);
+}
+
+/* --- Multi-day Toggle --- */
+.cal-multiday-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.cal-multiday-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  color: var(--color-text-secondary);
+}
+
+/* Switch track — project doesn't define shadcn CSS vars (--input, --primary),
+   so the Radix Switch is invisible without explicit overrides */
+.cal-multiday-toggle-row [role="switch"] {
+  background: var(--color-secondary);
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.cal-multiday-toggle-row [role="switch"][data-state="checked"] {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.cal-multiday-toggle-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  flex: 1;
+}
+
+.cal-multiday-picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  padding-left: var(--space-24);
+}
+
+.cal-multiday-date-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-8) var(--space-12);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  font-family: var(--font-family-base);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.cal-multiday-date-btn:hover {
+  border-color: var(--color-primary);
+}
+
+.cal-multiday-range-summary {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* --- Note Form --- */
+.cal-note-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  width: 100%;
+}
+
+.cal-note-textarea {
+  width: 100%;
+  padding: var(--space-12);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  font-family: var(--font-family-base);
+  resize: vertical;
+  line-height: 1.5;
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.cal-note-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(var(--color-success-rgb), 0.15);
+}
+
+.cal-note-edit-actions {
+  display: flex;
+  gap: var(--space-8);
+}
+
+.cal-note-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-16);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+  font-family: var(--font-family-base);
+  border: none;
+}
+
+.cal-note-btn--save {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+}
+
+.cal-note-btn--save:hover {
+  background: var(--color-primary-hover);
+}
+
+.cal-note-btn--save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cal-note-btn--cancel {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.cal-note-btn--cancel:hover {
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+/* --- Color Picker --- */
+.cal-color-picker {
+  display: flex;
+  gap: var(--space-8);
+}
+
+.cal-color-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+  padding: 0;
+}
+
+.cal-color-dot:hover {
+  transform: scale(1.15);
+}
+
+.cal-color-dot.selected {
+  border-color: var(--color-text);
+  box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-text);
+}
+
+/* --- Add Note Button --- */
+.cal-add-note-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding: var(--space-16);
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-base);
+}
+
+.cal-add-note-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  padding: var(--space-12);
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+  font-family: var(--font-family-base);
+  width: 100%;
+}
+
+.cal-add-note-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: rgba(var(--color-success-rgb), 0.05);
+}
+
+/* --- Calendar Responsive --- */
+@media (max-width: 768px) {
+  .cal-main {
+    padding: var(--space-16);
+  }
+
+  .cal-grid-wrapper {
+    padding: var(--space-16);
+  }
+
+  .cal-grid {
+    grid-template-columns: 44px repeat(31, 1fr);
+  }
+
+  .cal-grid-month-label {
+    font-size: 10px;
+  }
+
+  .cal-grid-day-header {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cal-year-label {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+/* --- Auth Gate --- */
+.auth-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-48) var(--space-24);
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.auth-gate-icon {
+  width: 56px;
+  height: 56px;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-24);
+}
+
+.auth-gate-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-12);
+  font-family: var(--font-family-base);
+}
+
+.auth-gate-desc {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-32);
+}
+
+.auth-gate-btn {
+  padding: var(--space-12) var(--space-32);
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+  border: none;
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-base);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+}
+
+.auth-gate-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* --- Locked Nav Tabs --- */
+.exp-nav-tab.locked {
+  opacity: 0.5;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.exp-nav-tab.locked:hover {
+  opacity: 0.7;
 }
