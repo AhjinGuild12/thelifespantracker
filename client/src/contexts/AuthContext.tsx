@@ -5,22 +5,33 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
-import type { User, AuthError } from "@supabase/supabase-js";
+import type { User } from "@supabase/supabase-js";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+
+interface AuthActionError {
+  message: string;
+}
+
+type AuthActionResult = Promise<{ error: AuthActionError | null }>;
+
+const missingSupabaseConfigError = {
+  message:
+    "Authentication is temporarily unavailable on this deployment. Cloudflare is missing the public Supabase VITE_* variables at build time.",
+};
 
 export interface AuthContextValue {
   user: User | null;
   loading: boolean;
-  signInWithGoogle: () => Promise<{ error: AuthError | null }>;
-  signInWithApple: () => Promise<{ error: AuthError | null }>;
+  signInWithGoogle: () => AuthActionResult;
+  signInWithApple: () => AuthActionResult;
   signInWithEmail: (
     email: string,
     password: string
-  ) => Promise<{ error: AuthError | null }>;
+  ) => AuthActionResult;
   signUp: (
     email: string,
     password: string
-  ) => Promise<{ error: AuthError | null }>;
+  ) => AuthActionResult;
   signOut: () => Promise<void>;
   isConfigured: boolean;
 }
@@ -54,6 +65,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signInWithGoogle = useCallback(async () => {
+    if (!isSupabaseConfigured) {
+      return { error: missingSupabaseConfigError };
+    }
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
     });
@@ -61,6 +76,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signInWithApple = useCallback(async () => {
+    if (!isSupabaseConfigured) {
+      return { error: missingSupabaseConfigError };
+    }
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "apple",
     });
@@ -69,6 +88,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signInWithEmail = useCallback(
     async (email: string, password: string) => {
+      if (!isSupabaseConfigured) {
+        return { error: missingSupabaseConfigError };
+      }
+
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -79,6 +102,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const signUp = useCallback(async (email: string, password: string) => {
+    if (!isSupabaseConfigured) {
+      return { error: missingSupabaseConfigError };
+    }
+
     const { error } = await supabase.auth.signUp({ email, password });
     return { error };
   }, []);

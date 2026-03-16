@@ -16,8 +16,13 @@ interface AuthDialogProps {
 }
 
 export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
-  const { signInWithGoogle, signInWithApple, signInWithEmail, signUp } =
-    useAuth();
+  const {
+    signInWithGoogle,
+    signInWithApple,
+    signInWithEmail,
+    signUp,
+    isConfigured,
+  } = useAuth();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -91,6 +96,7 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
           <Button
             variant="outline"
             className="w-full border-gray-600 bg-transparent hover:bg-gray-800 text-gray-100"
+            disabled={!isConfigured}
             onClick={() => handleOAuth("google", signInWithGoogle)}
           >
             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -117,6 +123,7 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
           <Button
             variant="outline"
             className="w-full border-gray-600 bg-transparent hover:bg-gray-800 text-gray-100"
+            disabled={!isConfigured}
             onClick={() => handleOAuth("apple", signInWithApple)}
           >
             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -148,6 +155,7 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={!isConfigured}
                 className="bg-gray-800 border-gray-600 text-gray-100 placeholder:text-gray-500"
                 placeholder="you@example.com"
               />
@@ -163,10 +171,18 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
+                disabled={!isConfigured}
                 className="bg-gray-800 border-gray-600 text-gray-100 placeholder:text-gray-500"
                 placeholder="••••••••"
               />
             </div>
+
+            {!isConfigured && (
+              <p className="text-sm text-amber-300">
+                This Cloudflare deployment is missing the public Supabase
+                `VITE_*` variables required for sign-in.
+              </p>
+            )}
 
             {error && (
               <p className="text-sm text-red-400">{error}</p>
@@ -174,7 +190,7 @@ export function AuthDialog({ open, onOpenChange }: AuthDialogProps) {
 
             <Button
               type="submit"
-              disabled={loading}
+              disabled={loading || !isConfigured}
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
             >
               {loading
